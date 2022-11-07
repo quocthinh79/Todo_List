@@ -1,7 +1,6 @@
 import "./App.css";
 import WrapToDoListComponent from "./component/wrap-to-do-list/WrapToDoListComponent/WrapToDoListComponent";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import { Button, NavLink } from "react-bootstrap";
 import PhotoWithApiComponent from "./component/photo-with-api/PhotoWithApiComponent/PhotoWithApiComponent";
 
 function App() {

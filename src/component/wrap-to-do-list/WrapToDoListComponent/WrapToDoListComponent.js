@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -162,18 +161,18 @@ function WrapToDoListComponent() {
   };
 
   const complete = (id) => {
-    array.forEach((item, index) => {
-      if (item.ThuTuCongViec === id) {
-        array[index].TrangThai = "Hoàn thành";
-        setArrray([...array]);
-      }
-    });
+    // array.forEach((item, index) => {
+    // if (item.ThuTuCongViec === id) {
+    array[id - 1].TrangThai = "Hoàn thành";
+    setArrray([...array]);
+    // }
+    // });
   };
 
   const lamTheoThuTuNhap = () => {
     let item = theoThuTuNhap.dequeue();
     if (item) {
-      complete(item.ThuTuCongViec);
+      complete(item.ViTri);
     }
   };
 
@@ -181,7 +180,7 @@ function WrapToDoListComponent() {
     let item = theoThoiGianConLai.pop();
     setTheoThoiGianConLai(theoThoiGianConLai);
     if (item) {
-      complete(item.ThuTuCongViec);
+      complete(item.ViTri);
     }
   };
 
@@ -334,7 +333,7 @@ function WrapToDoListComponent() {
                   </button>
                   <button
                     onClick={() => {
-                      complete(item.ThuTuCongViec);
+                      complete(item.ViTri);
                     }}
                     className="btn btn-success"
                     type="button"
@@ -394,7 +393,7 @@ function WrapToDoListComponent() {
                       </button>
                       <button
                         onClick={() => {
-                          complete(item.ThuTuCongViec);
+                          complete(item.ViTri);
                         }}
                         className="btn btn-success"
                         type="button"
@@ -460,7 +459,7 @@ function WrapToDoListComponent() {
                       </button>
                       <button
                         onClick={() => {
-                          complete(item.ThuTuCongViec);
+                          complete(item.ViTri);
                         }}
                         className="btn btn-success"
                         type="button"
