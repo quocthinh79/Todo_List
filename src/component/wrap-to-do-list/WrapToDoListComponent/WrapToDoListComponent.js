@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -37,6 +38,7 @@ function WrapToDoListComponent() {
         (24 * 60 * 60 * 1000)
     );
     const obj = {
+      ViTri: linkedList.toArray().length + 1,
       ThuTuCongViec: linkedList.toArray().length + 1,
       CongViecCanLam: toDo.current.value,
       NgayDenHan: date.current.value,
@@ -99,18 +101,16 @@ function WrapToDoListComponent() {
   };
 
   const editToDo = (idEdit) => {
+    array[idEdit - 1].CongViecCanLam = toDoEdit.current.value;
+    array[idEdit - 1].NgayDenHan = dateEdit.current.value;
+    array[idEdit - 1].ThoiGianConLai = Math.round(
+      (new Date(dateEdit.current.value.replace(/-/g, "/")) - new Date()) /
+        (24 * 60 * 60 * 1000)
+    );
+    array[idEdit - 1].TrangThai = selectStatus;
+    setArrray(array);
     setTree(tree.empty());
     array.forEach((item, index) => {
-      if (item.ThuTuCongViec === idEdit) {
-        item.CongViecCanLam = toDoEdit.current.value;
-        item.NgayDenHan = dateEdit.current.value;
-        item.ThoiGianConLai = Math.round(
-          (new Date(dateEdit.current.value.replace(/-/g, "/")) - new Date()) /
-            (24 * 60 * 60 * 1000)
-        );
-        item.TrangThai = selectStatus;
-        setArrray(array);
-      }
       setTree(
         tree.insert(
           Number.parseInt(item.ThoiGianConLai) === -0
@@ -129,6 +129,7 @@ function WrapToDoListComponent() {
     if (linkedList.toArray().length > 0) {
       setTree(tree.empty());
       linkedList.toArray().forEach((item, index) => {
+        item.ViTri = index + 1;
         setTree(
           tree.insert(
             Number.parseInt(item.ThoiGianConLai) === -0
@@ -195,21 +196,21 @@ function WrapToDoListComponent() {
           class="btn btn-primary me-md-2"
           type="button"
         >
-          Thêm
+          Thêm (Linked List)
         </button>
         <button
           onClick={() => setArrray([...bubbleSort(array, "TANGDAN")])}
           class="btn btn-primary me-md-2"
           type="button"
         >
-          Sắp xếp tăng dần
+          Sắp xếp tăng dần (Bubble Sort)
         </button>
         <button
           onClick={() => setArrray([...bubbleSort(array, "GIAMDAN")])}
           class="btn btn-primary me-md-2"
           type="button"
         >
-          Sắp xếp giảm dần
+          Sắp xếp giảm dần (Bubble Sort)
         </button>
         <button
           onClick={() => lamTheoThuTuNhap()}
@@ -240,7 +241,9 @@ function WrapToDoListComponent() {
             <input required ref={date} type="date" className="form-control" />
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => addToDo()}>Thêm công việc</Button>
+            <Button onClick={() => addToDo()}>
+              Thêm công việc (Linked List)
+            </Button>
             <Button onClick={() => setModalShow(false)}>Close</Button>
           </Modal.Footer>
         </Modal>
@@ -279,7 +282,9 @@ function WrapToDoListComponent() {
             </select>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => editToDo(idItemEdit)}>Sửa công việc</Button>
+            <Button onClick={() => editToDo(idItemEdit)}>
+              Sửa công việc (Array)
+            </Button>
             <Button onClick={() => setEditModal(false)}>Close</Button>
           </Modal.Footer>
         </Modal>
@@ -313,11 +318,11 @@ function WrapToDoListComponent() {
                     className="btn btn-danger me-md-2"
                     type="button"
                   >
-                    Xóa
+                    Xóa (Linked List)
                   </button>
                   <button
                     onClick={() => {
-                      setIdItemEdit(item.ThuTuCongViec);
+                      setIdItemEdit(item.ViTri);
                       setToDo(item.CongViecCanLam);
                       setDateToDo(item.NgayDenHan);
                       openModalEdit();
@@ -325,7 +330,7 @@ function WrapToDoListComponent() {
                     className="btn btn-primary"
                     type="button"
                   >
-                    Sửa
+                    Sửa (Array)
                   </button>
                   <button
                     onClick={() => {
@@ -334,7 +339,7 @@ function WrapToDoListComponent() {
                     className="btn btn-success"
                     type="button"
                   >
-                    Hoàn thành
+                    Hoàn thành (Array)
                   </button>
                 </div>
               </td>
@@ -344,7 +349,7 @@ function WrapToDoListComponent() {
       </table>
       {deadline.length > 0 ? (
         <>
-          <p className="fst-italic fs-5">Công việc gần đến hạn</p>
+          <p className="fst-italic fs-5">Công việc gần đến hạn (Tree)</p>
           <table className="table table-bordered">
             <thead>
               <tr>
@@ -373,7 +378,7 @@ function WrapToDoListComponent() {
                         className="btn btn-danger me-md-2"
                         type="button"
                       >
-                        Xóa
+                        Xóa (Linked List)
                       </button>
                       <button
                         onClick={() => {
@@ -385,7 +390,7 @@ function WrapToDoListComponent() {
                         className="btn btn-primary"
                         type="button"
                       >
-                        Sửa
+                        Sửa (Array)
                       </button>
                       <button
                         onClick={() => {
@@ -394,7 +399,7 @@ function WrapToDoListComponent() {
                         className="btn btn-success"
                         type="button"
                       >
-                        Hoàn thành
+                        Hoàn thành (Array)
                       </button>
                     </div>
                   </td>
@@ -409,7 +414,7 @@ function WrapToDoListComponent() {
       {workMuchTime.length > 0 ? (
         <>
           <p className="fst-italic fs-5">
-            Công việc có nhiều thời gian làm nhất
+            Công việc có nhiều thời gian làm nhất (Tree)
           </p>
           <table className="table table-bordered">
             <thead>
@@ -439,7 +444,7 @@ function WrapToDoListComponent() {
                         className="btn btn-danger me-md-2"
                         type="button"
                       >
-                        Xóa
+                        Xóa (Linked List)
                       </button>
                       <button
                         onClick={() => {
@@ -451,7 +456,7 @@ function WrapToDoListComponent() {
                         className="btn btn-primary"
                         type="button"
                       >
-                        Sửa
+                        Sửa (Array)
                       </button>
                       <button
                         onClick={() => {
@@ -460,7 +465,7 @@ function WrapToDoListComponent() {
                         className="btn btn-success"
                         type="button"
                       >
-                        Hoàn thành
+                        Hoàn thành (Array)
                       </button>
                     </div>
                   </td>

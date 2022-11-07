@@ -37,6 +37,64 @@ export default class BinarySearchTreeMy {
     }
     //     return this;
   }
+
+  insertText(value) {
+    const newNode = new Node(value);
+    if (!this.root) {
+      this.root = newNode;
+      return this;
+    }
+    let current = this.root;
+    const rnLoop = true;
+    while (rnLoop) {
+      if (`${value}`.localeCompare(`${current.value}`, "pl") === 0) return this;
+      if (`${value}`.localeCompare(`${current.value}`, "pl") === -1) {
+        if (!current.left) {
+          current.left = newNode;
+          return this;
+        }
+        current = current.left;
+      } else {
+        if (!current.right) {
+          current.right = newNode;
+          return this;
+        }
+        current = current.right;
+      }
+    }
+    //     return this;
+  }
+
+  insertTextObject(value) {
+    const newNode = new Node(value);
+    if (!this.root) {
+      this.root = newNode;
+      return this;
+    }
+    let current = this.root;
+    const rnLoop = true;
+    while (rnLoop) {
+      if (`${value.title}`.localeCompare(`${current.value.title}`, "pl") === 0)
+        return this;
+      if (
+        `${value.title}`.localeCompare(`${current.value.title}`, "pl") === -1
+      ) {
+        if (!current.left) {
+          current.left = newNode;
+          return this;
+        }
+        current = current.left;
+      } else {
+        if (!current.right) {
+          current.right = newNode;
+          return this;
+        }
+        current = current.right;
+      }
+    }
+    //     return this;
+  }
+
   //finds the given number and returns it. If its not found, returns `null` or `undefined`.
   find(value) {
     if (!this.root) return null;
