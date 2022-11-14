@@ -9,29 +9,15 @@ function PhotoWithApiComponent() {
   const [resultDFS, setResultDFS] = useState(new LinkedList());
 
   const mergeSort = (arr) => {
-    // *** Chúng ta sẽ không chia arr ra thành các mảng con nữa nếu arr chỉ có 1 phần tử
     if (arr.length <= 1) return arr;
-
-    // *** vì splice sẽ thay đổi giá trị của arr nên mình copy arr để giữ nguyên giá trị ban đầu của nó
     const right = [...arr];
-
-    // *** chia đôi mảng ra thành 2 mảng con
     const middlePoint = arr.length / 2;
     const left = right.splice(0, middlePoint);
-
-    // *** tiếp tục chia các mảng con ra thành các mảng con
     return mergeUnsortedArrs(mergeSort(left), mergeSort(right));
   };
 
   const mergeUnsortedArrs = (left, right) => {
-    // *** các phần tử cần được sắp xếp lại sẽ được chứa ở đây
     const sortedItems = [];
-
-    /*
-        *** Chúng ta sẽ dùng method shift của Array để loại bỏ các phần tử của 2 mảng left và right
-            trong từng vòng lặp. Nên, nếu 1 trong 2 mảng left và right là mảng trống => ta khg thể
-            và cũng khg cần phải so sánh thêm nữa,
-     */
     while (left.length && right.length) {
       if (left[0].id <= right[0].id) {
         sortedItems.push(left.shift());
@@ -39,8 +25,6 @@ function PhotoWithApiComponent() {
         sortedItems.push(right.shift());
       }
     }
-
-    // *** kết hợp (merge) các cặp mảng con đã được sắp xếp lại với nhau thành một mảng mới,
     return [...sortedItems, ...left, ...right];
   };
 
@@ -65,18 +49,19 @@ function PhotoWithApiComponent() {
       setTreeText(treeText.insertTextObject(item));
     });
   }, [photosApi]);
+
   const dfs = (root, target) => {
     setResultDFS((pre) => (pre = new LinkedList()));
     if (root) {
-      dfs(root.left, target);
       if (root.value.title.toLowerCase().includes(target.toLowerCase())) {
         setResultDFS(resultDFS.append(root.value));
       }
+      dfs(root.left, target);
       dfs(root.right, target);
     }
   };
   const searchWithApi = (value) => {
-    if (value === "") value = " ";
+    // if (value === "") value = " ";
     dfs(treeText.root, `${value}`);
     if (resultDFS.toArray().length <= 0) {
       setPhotoApi([
